@@ -1,5 +1,4 @@
 import math
-s
 
 
 # scale from 128*128 to 6 times bigger
@@ -28,6 +27,7 @@ def rotate(v, center=(0, 0), degree=0):
 
 
 def convexContains(vertices, point):
+    return
 
 
 if __name__ == '__main__':

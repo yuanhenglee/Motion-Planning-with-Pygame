@@ -31,8 +31,10 @@ class Abstract_Polygon:
             pygame.draw.polygon(gameDisplay, self.color, canvas_vertices)
 
     def contain(self, point):
-
-        return True
+        for c in self.convex:
+            if utils.convexContains(c.abs_vertices, point):
+                return True
+        return False
 
     def set_drag(self):
         self.color = GREEN
