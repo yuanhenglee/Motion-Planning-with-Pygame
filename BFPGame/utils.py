@@ -27,8 +27,18 @@ def rotate(v, center=(0, 0), degree=0):
 
 
 def convexContains(vertices, point):
-    return
+    res = False
+    for i in range(len(vertices)-1):
+        if (vertices[i][1] > point[1]) != \
+            (vertices[i+1][1] > point[1]) and \
+                (point[0] < (vertices[i+1][0] - vertices[i][0]) * (point[1] - vertices[i][1]) / (vertices[i+1][1]-vertices[i][1]) + vertices[i][0]):
+            res = not res
+    if res:
+        print(vertices, " : ", point)
+    return res
 
 
 if __name__ == '__main__':
-    print(rotate((1, 1), (0, 0), 45))
+    print(
+        convexContains([(0, 0), (5, 0), (5, 5), (0, 5)], (1, 0.1))
+    )

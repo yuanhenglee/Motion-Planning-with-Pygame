@@ -58,6 +58,7 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mousePosition = pygame.mouse.get_pos()
+            print(mousePosition)
             for polygon in robots+obstacles:
                 if polygon.contain(utils.canvas2World(mousePosition)):
                     polygon.set_drag()
