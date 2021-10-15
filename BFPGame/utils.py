@@ -27,7 +27,13 @@ def rotate(v, center=(0, 0), degree=0):
         math.cos(angle)*(v[1]-center[1]) + center[1]
     return xr, yr
 
-# form vector from points
+
+def to_abs_pos(config, vertice):
+    x = (vertice[0] + config.position[0])
+    y = (vertice[1] + config.position[1])
+    x, y = rotate((x, y), config.position, config.rotation)
+    return (x, y)
+    # form vector from points
 
 
 def formVector(v1, v2):
@@ -35,6 +41,12 @@ def formVector(v1, v2):
 
 
 def convexContains(vertices, point):
+    minX = min(v[0] for v in vertices)
+    minY = min(v[1] for v in vertices)
+    maxX = max(v[0] for v in vertices)
+    maxY = max(v[1] for v in vertices)
+    if not(minX < point[0] < maxX and minY < point[1] < maxY):
+        return False
     crossProduct = np.cross(formVector(
         vertices[-1], vertices[0]), formVector(vertices[-1], point))
     for i in range(1, len(vertices)):

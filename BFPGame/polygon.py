@@ -3,6 +3,7 @@ from copy import deepcopy
 import utils
 import pygame
 from color import *
+import copy
 
 
 class Abstract_Polygon:
@@ -18,11 +19,7 @@ class Abstract_Polygon:
         for c in self.convex:
             c.abs_vertices = []
             for v in c.vertices:
-                x = (v[0] + self.config.position[0])
-                y = (v[1] + self.config.position[1])
-                x, y = utils.rotate((x, y), self.config.position,
-                                    self.config.rotation)
-                c.abs_vertices.append((x, y))
+                c.abs_vertices.append(utils.to_abs_pos(self.config, v))
 
     def draw(self, gameDisplay):
         for c in self.convex:
@@ -36,7 +33,7 @@ class Abstract_Polygon:
         return False
 
     def set_drag(self):
-        self.color = GREEN
+        self.color = greyed_out(self.default_color)
 
     def reset_drag(self):
         self.color = self.default_color
@@ -45,11 +42,32 @@ class Abstract_Polygon:
         return repr(self.convex)
 
 
-class Robot(Abstract_Polygon):
+class Robot():
     def __init__(self, _n_convex, _convex, _initial_config, _goal_config, _n_control_points, _control_points):
-        super().__init__(_n_convex, _convex, _initial_config, RED)
-        self.initial_config = _initial_config
-        self.goal_config = _goal_config
+        self.robot_init = Robot_init(
+            _n_convex, _convex, _initial_config, _n_control_points, _control_points)
+
+        convex_copy = copy.deepcopy(_convex)
+        control_points_copy = copy.deepcopy(_control_points)
+
+        self.robot_goal = Robot_goal(
+            _n_convex, convex_copy, _goal_config, _n_control_points, control_points_copy)
+
+    def draw(self, gameDisplay):
+        self.robot_init.draw(gameDisplay)
+        self.robot_goal.draw(gameDisplay)
+
+
+class Robot_goal(Abstract_Polygon):
+    def __init__(self, _n_convex, _convex, _config, _n_control_points, _control_points):
+        super().__init__(_n_convex, _convex, _config, YELLOW)
+        self.n_control_points = _n_control_points
+        self.control_points = _control_points
+
+
+class Robot_init(Abstract_Polygon):
+    def __init__(self, _n_convex, _convex, _config, _n_control_points, _control_points):
+        super().__init__(_n_convex, _convex, _config, RED)
         self.n_control_points = _n_control_points
         self.control_points = _control_points
 
