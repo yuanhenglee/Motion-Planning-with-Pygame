@@ -1,5 +1,5 @@
 #number of obstacle
-42
+41
 # obstacle 0
 # number of convex part
 1
@@ -521,19 +521,6 @@
 #configuration
 8.75 9.25 0.0
 # obstacle 40
-# number of convex part
-1
-# convex part #0
-# number of vertices
-4
-# vertices
-96.0 88.5
-96.0 85.75
-99.0 85.75
-99.0 88.5
-#configuration
--0.5 1.75 0.0
-# obstacle 41
 # number of convex part
 1
 # convex part #0

@@ -1,4 +1,6 @@
 import math
+import numpy as np
+from numpy.core.numeric import cross
 
 
 # scale from 128*128 to 6 times bigger
@@ -6,11 +8,11 @@ multiplier = 4
 
 
 def world2Canvas(vertex):
-    return round(vertex[0]*multiplier), round(vertex[1]*multiplier)
+    return round(vertex[0]*multiplier), round((128-vertex[1])*multiplier)
 
 
 def canvas2World(vertex):
-    return (vertex[0]/multiplier), (vertex[1]/multiplier)
+    return (vertex[0]/multiplier), (128-vertex[1]/multiplier)
 
 
 def distance(v1, v2):
@@ -25,20 +27,28 @@ def rotate(v, center=(0, 0), degree=0):
         math.cos(angle)*(v[1]-center[1]) + center[1]
     return xr, yr
 
+# form vector from points
+
+
+def formVector(v1, v2):
+    return [v2[0] - v1[0], v2[1] - v1[1]]
+
 
 def convexContains(vertices, point):
-    res = False
-    for i in range(len(vertices)-1):
-        if (vertices[i][1] > point[1]) != \
-            (vertices[i+1][1] > point[1]) and \
-                (point[0] < (vertices[i+1][0] - vertices[i][0]) * (point[1] - vertices[i][1]) / (vertices[i+1][1]-vertices[i][1]) + vertices[i][0]):
-            res = not res
-    if res:
-        print(vertices, " : ", point)
-    return res
+    crossProduct = np.cross(formVector(
+        vertices[-1], vertices[0]), formVector(vertices[-1], point))
+    for i in range(1, len(vertices)):
+        nextCrossProduct = np.cross(formVector(
+            vertices[i-1], vertices[i]),
+            formVector(vertices[i-1], point))
+        if (crossProduct * nextCrossProduct < 0):
+            return False
+    # print(f"{point=}")
+    # print(f"{vertices=}")
+    return True
 
 
 if __name__ == '__main__':
     print(
-        convexContains([(0, 0), (5, 0), (5, 5), (0, 5)], (1, 0.1))
+        convexContains([(0, 0), (5, 0), (5, 5), (0, 5)], (1, 6))
     )

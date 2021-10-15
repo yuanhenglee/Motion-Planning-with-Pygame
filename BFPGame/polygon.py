@@ -22,7 +22,6 @@ class Abstract_Polygon:
                 y = (v[1] + self.config.position[1])
                 x, y = utils.rotate((x, y), self.config.position,
                                     self.config.rotation)
-                y = 128 - y
                 c.abs_vertices.append((x, y))
 
     def draw(self, gameDisplay):
@@ -74,5 +73,21 @@ class Config:
         self.position = _position
         self.rotation = _rotation
 
+    # def move(self, offset):
+    #     self.position = (self.position[0] +
+    #                      offset[0], self.position[1] + offset[1])
+
+    def set_config(self, position=None, rotation=None):
+        if position is not None:
+            self.position = position
+        if rotation is not None:
+            self.rotation = rotation
+
     def __repr__(self):
         return repr(self.position) + " " + repr(self.rotation)
+
+    def __add__(self, other):
+        position = (self.position[0] + other.position[0],
+                    self.position[1] + other.position[1])
+        rotation = self.rotation + other.rotation
+        return Config(position, rotation)
