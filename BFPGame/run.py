@@ -5,6 +5,7 @@ from color import *
 import polygon
 import gui
 import globals
+import potentialField
 
 import pygame
 from pygame.locals import QUIT
@@ -27,16 +28,18 @@ def set_mode_rotate():
     # print("SET ROTATION")
 
 
+# init ppygame window
 pygame.init()
 gameDisplay = pygame.display.set_mode(
     (178*utils.multiplier, 128*utils.multiplier))
 pygame.display.set_caption('BFP Demo')
+
+# init variables
 running = True
 dragging_obj = None
 dragging_obj_start_pos = (0, 0)
 dragging_obj_start_rotation = 0
 dragging_mouse_start_pos = (0, 0)
-
 robots, obstacles = initialize(gameDisplay)
 all_objects = set(obstacles)
 for r in robots:
@@ -44,18 +47,20 @@ for r in robots:
     all_objects.add(r.robot_goal)
 all_dragging_objects = set(all_objects)
 
+# BUTTON
 # x: 128+200
 # Y: 128 = 20*6
 # button size: 192, 36
 # button space: 200, 40
-
-
 all_objects.add(gui.Button('DRAGGING MODE', 192, 36,
                 utils.world2Canvas((129, 10)), 5, set_mode_drag))
 all_objects.add(gui.Button('ROTATING MODE', 192, 36,
                 utils.world2Canvas((129, 21)), 5, set_mode_rotate))
 # all_objects.add(gui.Button('TEST BUTTON', 192, 36,
 #                 utils.world2Canvas((129, 32)), 5, set_mode_drag))
+
+# constructing bitmap
+potentialField.obstacles_bitmap.mark_obstacles(obstacles)
 
 
 while running:

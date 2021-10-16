@@ -89,7 +89,6 @@ def loadObstacle():
 def initialize(gameDisplay):
     robots = loadRobots()
     obstacles = loadObstacle()
-
     return robots, obstacles
 
 

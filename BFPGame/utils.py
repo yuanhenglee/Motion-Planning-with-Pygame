@@ -68,6 +68,27 @@ def convexContains(vertices, point):
     return True
 
 
-if __name__ == '__main__':
+def fit_grid(v1, v2):
+    d = round(max(abs(v1[0]-v2[0]), abs(v1[1]-v2[1])))
+    d = d if d > 0 else 1
+    dx = (v2[0]-v1[0])/d
+    dy = (v2[1]-v1[1])/d
+    line = []
+    for i in range(d):
+        x = round(v1[0]+i*dx)
+        y = round(v1[1]+i*dy)
+        if 0 <= x < 128 and 0 <= y < 128:
+            line.append((x, y))
+    return line
 
-    print(mouse2Rotation((1, 0), (-1, -1), (0, 0)))
+
+def convex_boundaries(convex):
+    boundaries = set()
+    for i in range(1, len(convex.abs_vertices)):
+        line = fit_grid(convex.abs_vertices[i-1], convex.abs_vertices[i])
+        boundaries.update(line)
+    return boundaries
+
+
+if __name__ == '__main__':
+    fit_grid((0, 0), (100, 50))
