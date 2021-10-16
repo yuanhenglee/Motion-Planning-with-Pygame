@@ -28,6 +28,14 @@ def rotate(v, center=(0, 0), degree=0):
     return xr, yr
 
 
+def mouse2Rotation(v1, v2, center):
+    vector1 = formVector(center, v1)
+    vector2 = formVector(center, v2)
+    theta = math.atan2(vector2[1], vector2[0]) - \
+        math.atan2(vector1[1], vector1[0])
+    return math.degrees(theta)
+
+
 def to_abs_pos(config, vertice):
     x = (vertice[0] + config.position[0])
     y = (vertice[1] + config.position[1])
@@ -61,6 +69,5 @@ def convexContains(vertices, point):
 
 
 if __name__ == '__main__':
-    print(
-        convexContains([(0, 0), (5, 0), (5, 5), (0, 5)], (1, 6))
-    )
+
+    print(mouse2Rotation((1, 0), (-1, -1), (0, 0)))

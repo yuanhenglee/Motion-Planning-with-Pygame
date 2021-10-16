@@ -32,10 +32,10 @@ class Abstract_Polygon:
                 return True
         return False
 
-    def set_drag(self):
+    def set_moving(self):
         self.color = greyed_out(self.default_color)
 
-    def reset_drag(self):
+    def reset_moving(self):
         self.color = self.default_color
 
     def __repr__(self):
