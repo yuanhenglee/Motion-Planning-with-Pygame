@@ -4,9 +4,13 @@ import pygame
 from polygon import *
 import utils
 
+# robot_dat_path = "Dat/bfp-data/robot1.dat"
+robot_dat_path = "Dat/robot.dat"
+# obstacle_dat_path = "Dat/bfp-data/obstacle1.dat"
+obstacle_dat_path = "Dat/obstacle.dat"
+
 
 def loadRobots():
-    robot_dat_path = "Dat/robot.dat"
     with open(robot_dat_path) as f:
         f.readline()
         # number of robots
@@ -53,7 +57,6 @@ def loadRobots():
 
 
 def loadObstacle():
-    obstacle_dat_path = "Dat/obstacle.dat"
     with open(obstacle_dat_path) as f:
         f.readline()
         # number of obstacles
