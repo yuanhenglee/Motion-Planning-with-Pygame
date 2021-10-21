@@ -13,8 +13,13 @@ from pygame.locals import QUIT
 
 def update_display():
     gameDisplay.fill(WHITE)
+
     for obj in all_objects:
         obj.draw(gameDisplay)
+
+    if globals.show_bitmap:
+        obstacles_bitmap.show_bitmap(gameDisplay)
+
     pygame.display.update()
 
 
@@ -26,6 +31,9 @@ def set_mode_drag():
 def set_mode_rotate():
     globals.mode = 'rotate'
     # print("SET ROTATION")
+
+def toggle_show_obstacle_bitmap():
+    globals.show_bitmap = not globals.show_bitmap
 
 
 # init ppygame window
@@ -56,14 +64,19 @@ all_objects.add(gui.Button('DRAGGING MODE', 192, 36,
                 utils.world2Canvas((129, 10)), 5, set_mode_drag))
 all_objects.add(gui.Button('ROTATING MODE', 192, 36,
                 utils.world2Canvas((129, 21)), 5, set_mode_rotate))
-# all_objects.add(gui.Button('TEST BUTTON', 192, 36,
-#                 utils.world2Canvas((129, 32)), 5, set_mode_drag))
+all_objects.add(gui.Button('OBSTACLE BITMAP', 192, 36,
+                utils.world2Canvas((129, 32)), 5, toggle_show_obstacle_bitmap))
 
-# constructing bitmap
-potentialField.obstacles_bitmap.mark_obstacles(obstacles)
 
 
 while running:
+
+    # update bitmap
+    # constructing bitmap
+    obstacles_bitmap = potentialField.PotentialField()
+    obstacles_bitmap.mark_obstacles(obstacles)
+
+
     for event in pygame.event.get():
         if event.type == pygame.locals.QUIT:
             running = False

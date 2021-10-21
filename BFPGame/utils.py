@@ -84,8 +84,8 @@ def fit_grid(v1, v2):
 
 def convex_boundaries(convex):
     boundaries = set()
-    for i in range(1, len(convex.abs_vertices)):
-        line = fit_grid(convex.abs_vertices[i-1], convex.abs_vertices[i])
+    for i in range(1, len(convex.abs_vertices)+1):
+        line = fit_grid(convex.abs_vertices[i-1], convex.abs_vertices[i%len(convex.abs_vertices)])
         boundaries.update(line)
     return boundaries
 

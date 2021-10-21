@@ -48,11 +48,10 @@ class Button:
             if pygame.mouse.get_pressed()[0]:
                 self.dynamic_elecation = 0
                 self.pressed = True
-                self.operation()
             else:
                 self.dynamic_elecation = self.elevation
                 if self.pressed == True:
-                    # print('click')
+                    self.operation()
                     self.pressed = False
         else:
             self.dynamic_elecation = self.elevation
