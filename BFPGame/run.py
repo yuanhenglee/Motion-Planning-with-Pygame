@@ -18,6 +18,7 @@ def update_display():
         obj.draw(gameDisplay)
 
     if globals.show_bitmap:
+        obstacles_bitmap.mark_NF1( robots[0].robot_goal )
         obstacles_bitmap.show_bitmap(gameDisplay)
 
     pygame.display.update()

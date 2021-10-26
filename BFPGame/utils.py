@@ -89,6 +89,28 @@ def convex_boundaries(convex):
         boundaries.update(line)
     return boundaries
 
+def findNeighbors(point):
+    neighbors = []
+    x, y = point[0], point[1]
+    # for offset_x in range(-1,2):
+    #     if 0 <= x + offset_x < 128:
+    #         for offset_y in range(-1,2):
+    #             if 0 <= y + offset_y < 128 and (offset_x!=0 or offset_y!=0):
+    #                 neighbors.append((x+offset_x, y+offset_y))
+    if x+1 < 128:
+        neighbors.append((x+1, y))
+    if x-1 >= 0:
+        neighbors.append((x-1, y))
+    if y+1 < 128:
+        neighbors.append((x, y+1))
+    if y-1 >= 0:
+        neighbors.append((x, y-1))
+    return neighbors
+
+
+
 
 if __name__ == '__main__':
-    fit_grid((0, 0), (100, 50))
+    print(
+        findNeighbors((127,126))
+    )
