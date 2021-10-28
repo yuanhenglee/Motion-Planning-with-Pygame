@@ -71,10 +71,11 @@ def convexContains(vertices, point):
 def fit_grid(v1, v2):
     d = round(max(abs(v1[0]-v2[0]), abs(v1[1]-v2[1])))
     d = d if d > 0 else 1
+    d*=2
     dx = (v2[0]-v1[0])/d
     dy = (v2[1]-v1[1])/d
     line = []
-    for i in range(d):
+    for i in range(d+1):
         x = round(v1[0]+i*dx)
         y = round(v1[1]+i*dy)
         if 0 <= x < 128 and 0 <= y < 128:
@@ -112,5 +113,5 @@ def findNeighbors(point):
 
 if __name__ == '__main__':
     print(
-        findNeighbors((127,126))
+        fit_grid((1,1), (1,9))
     )

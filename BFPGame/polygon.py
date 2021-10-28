@@ -83,7 +83,7 @@ class Convex:
         self.vertices = _vertices
 
     def __repr__(self):
-        return repr(self.vertices)
+        return repr(self.abs_vertices)
 
 
 class Config:

@@ -65,7 +65,7 @@ all_objects.add(gui.Button('DRAGGING MODE', 192, 36,
                 utils.world2Canvas((129, 10)), 5, set_mode_drag))
 all_objects.add(gui.Button('ROTATING MODE', 192, 36,
                 utils.world2Canvas((129, 21)), 5, set_mode_rotate))
-all_objects.add(gui.Button('OBSTACLE BITMAP', 192, 36,
+all_objects.add(gui.Button('Toggle PF', 192, 36,
                 utils.world2Canvas((129, 32)), 5, toggle_show_obstacle_bitmap))
 
 
@@ -84,8 +84,8 @@ while running:
         # Drag & drop
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mousePosition = pygame.mouse.get_pos()
-            # print(f"{mousePosition=}")
-            # print(f"{utils.canvas2World(mousePosition)=}")
+            print(f"{mousePosition=}")
+            print(f"{utils.canvas2World(mousePosition)=}")
             for polygon in all_dragging_objects:
                 if polygon.contain(utils.canvas2World(mousePosition)):
                     dragging_obj_start_pos = polygon.config.position
