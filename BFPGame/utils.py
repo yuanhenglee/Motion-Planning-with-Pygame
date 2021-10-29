@@ -70,8 +70,7 @@ def convexContains(vertices, point):
 
 def fit_grid(v1, v2):
     d = round(max(abs(v1[0]-v2[0]), abs(v1[1]-v2[1])))
-    d = d if d > 0 else 1
-    d*=2
+    d = d*2 if d > 0 else 1 # deal with rounding error
     dx = (v2[0]-v1[0])/d
     dy = (v2[1]-v1[1])/d
     line = []
