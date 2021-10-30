@@ -58,11 +58,20 @@ class Robot():
         self.robot_goal.draw(gameDisplay)
 
 
+
 class Robot_goal(Abstract_Polygon):
     def __init__(self, _n_convex, _convex, _config, _n_control_points, _control_points):
         super().__init__(_n_convex, _convex, _config, YELLOW)
         self.n_control_points = _n_control_points
         self.control_points = _control_points
+    
+    def get_abs_round_point(self):
+        abs_pos_goal = []
+        for control_point in self.control_points:
+            point = utils.to_abs_pos(self.config, control_point)
+            point = round(point[0]), round(point[1])
+            abs_pos_goal.append(point)
+        return abs_pos_goal
 
 
 class Robot_init(Abstract_Polygon):

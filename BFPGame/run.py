@@ -18,7 +18,9 @@ def update_display():
         obj.draw(gameDisplay)
 
     if globals.show_bitmap:
-        obstacles_bitmap.mark_NF1( robots[0].robot_goal )
+        # obstacles_bitmap.mark_NF1( robots[0].robot_goal )
+        obstacles_bitmap = potentialField.PotentialField(obstacles, robots[0].robot_goal.get_abs_round_point()[0])
+        # obstacles_bitmap.mark_obstacles(obstacles)
         obstacles_bitmap.show_bitmap(gameDisplay)
 
     pygame.display.update()
@@ -71,12 +73,6 @@ all_objects.add(gui.Button('Toggle PF', 192, 36,
 
 
 while running:
-
-    # update bitmap
-    # constructing bitmap
-    obstacles_bitmap = potentialField.PotentialField()
-    obstacles_bitmap.mark_obstacles(obstacles)
-
 
     for event in pygame.event.get():
         if event.type == pygame.locals.QUIT:

@@ -4,7 +4,7 @@ from numpy.core.numeric import cross
 
 
 # scale from 128*128 to 6 times bigger
-multiplier = 4
+multiplier = 6
 
 
 def world2Canvas(vertex):
@@ -69,8 +69,8 @@ def convexContains(vertices, point):
 
 
 def fit_grid(v1, v2):
-    d = round(max(abs(v1[0]-v2[0]), abs(v1[1]-v2[1])))
-    d = d*2 if d > 0 else 1 # deal with rounding error
+    d = (max(abs(v1[0]-v2[0]), abs(v1[1]-v2[1])))
+    d = round(d*2) if d > 0 else 1 # deal with rounding error
     dx = (v2[0]-v1[0])/d
     dy = (v2[1]-v1[1])/d
     line = []
@@ -107,6 +107,14 @@ def findNeighbors(point):
         neighbors.append((x, y-1))
     return neighbors
 
+def findBestNeighbor( point, distance ):
+    bestNeighbor = None
+    d = 0
+    for n in findNeighbors(point):
+        if distance[n] > d:
+            d = distance[n]
+            bestNeighbor = n
+    return bestNeighbor
 
 
 
