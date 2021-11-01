@@ -116,6 +116,16 @@ def findBestNeighbor( point, distance ):
             bestNeighbor = n
     return bestNeighbor
 
+def new_obstacles_bitmap( obstacles = [] ):
+    obstacles_bitmap = np.full((128, 128), 254)
+    if obstacles:
+        for obstacle in obstacles:
+            for c in obstacle.convex:
+                # mark where obstacle are
+                for point in convex_boundaries(c):
+                    print(point)
+                    obstacles_bitmap[point[0]][point[1]] = 255 
+    return obstacles_bitmap
 
 
 if __name__ == '__main__':

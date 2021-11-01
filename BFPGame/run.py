@@ -5,7 +5,7 @@ from color import *
 import polygon
 import gui
 import globals
-import potentialField
+from potentialField import PotentialField
 
 import pygame
 from pygame.locals import QUIT
@@ -17,11 +17,8 @@ def update_display():
     for obj in all_objects:
         obj.draw(gameDisplay)
 
-    if globals.show_bitmap:
-        # obstacles_bitmap.mark_NF1( robots[0].robot_goal )
-        obstacles_bitmap = potentialField.PotentialField(obstacles, robots[0].robot_goal.get_abs_round_point()[0])
-        # obstacles_bitmap.mark_obstacles(obstacles)
-        obstacles_bitmap.show_bitmap(gameDisplay)
+    if globals.show_bitmap and globals.pf != None:
+        globals.pf.show_bitmap(gameDisplay)
 
     pygame.display.update()
 
@@ -38,6 +35,9 @@ def set_mode_rotate():
 def toggle_show_obstacle_bitmap():
     globals.show_bitmap = not globals.show_bitmap
 
+def set_PF_1():
+    globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
+    globals.pf = PotentialField( robots[0].robot_goal.get_abs_round_point()[0] ) 
 
 # init ppygame window
 pygame.init()
@@ -67,8 +67,10 @@ all_objects.add(gui.Button('DRAGGING MODE', 192, 36,
                 utils.world2Canvas((129, 10)), 5, set_mode_drag))
 all_objects.add(gui.Button('ROTATING MODE', 192, 36,
                 utils.world2Canvas((129, 21)), 5, set_mode_rotate))
-all_objects.add(gui.Button('Toggle PF', 192, 36,
+all_objects.add(gui.Button('Toggle PF Show', 192, 36,
                 utils.world2Canvas((129, 32)), 5, toggle_show_obstacle_bitmap))
+all_objects.add(gui.Button('set PF', 192, 36,
+                utils.world2Canvas((129, 43)), 5, set_PF_1))
 
 
 
@@ -111,4 +113,4 @@ while running:
                 dragging_obj.update_abs_vertices()
                 lastMousePosition = mousePosition
 
-    update_display()
+        update_display()
