@@ -35,9 +35,13 @@ def set_mode_rotate():
 def toggle_show_obstacle_bitmap():
     globals.show_bitmap = not globals.show_bitmap
 
-def set_PF_1():
+def set_PF():
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
-    globals.pf = PotentialField( robots[0].robot_goal.get_abs_round_point()[0] ) 
+    pf1 = PotentialField() 
+    pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
+    pf2 = PotentialField() 
+    pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
+    globals.pf = pf1 + pf2
 
 # init ppygame window
 pygame.init()
@@ -70,7 +74,7 @@ all_objects.add(gui.Button('ROTATING MODE', 192, 36,
 all_objects.add(gui.Button('Toggle PF Show', 192, 36,
                 utils.world2Canvas((129, 32)), 5, toggle_show_obstacle_bitmap))
 all_objects.add(gui.Button('set PF', 192, 36,
-                utils.world2Canvas((129, 43)), 5, set_PF_1))
+                utils.world2Canvas((129, 43)), 5, set_PF))
 
 
 

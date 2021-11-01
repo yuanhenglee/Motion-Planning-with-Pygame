@@ -7,11 +7,8 @@ import globals
 
 cost = 1
 class PotentialField:
-    def __init__(self, goal ):
-        self.bitmap = np.full( (128,128), 0) 
-        self.mark_NF1( goal )
-        # self.mark_NF2( goal)
-
+    def __init__(self):
+        self.bitmap = np.full( (128,128), 0)
 
     def show_bitmap(self, gameDisplay):
         for i in range(128):
@@ -126,5 +123,9 @@ class PotentialField:
 
         self.bitmap = bitmap 
 
+    def __add__(self, o): 
+        new_pf = PotentialField()
+        new_pf.bitmap = (self.bitmap + o.bitmap)/2
+        return new_pf
 
     
