@@ -56,6 +56,10 @@ def set_NF2_PF():
     globals.pf = pf1 + pf2
     globals.show_bitmap = not globals.show_bitmap
 
+def set_BFS_PF():
+    globals.pf.BFS( robots[0].robot_init.get_abs_round_point()[0] ) 
+    globals.show_bitmap = not globals.show_bitmap
+
 # init pygame window
 pygame.init()
 gameDisplay = pygame.display.set_mode(
@@ -82,12 +86,12 @@ all_dragging_objects = set(all_objects)
 # button space: 200, 40
 all_objects.add(gui.Button('Toggle Drag/Rotate', 192, 36,
                 utils.world2Canvas((129, 10)), 5, toggle_drag_rotate))
-# all_objects.add(gui.Button('Reset', 192, 36,
-#                 utils.world2Canvas((129, 21)), 5, init_window))
 all_objects.add(gui.Button('Show NF1 PF', 192, 36,
                 utils.world2Canvas((129, 32)), 5, set_NF1_PF))
 all_objects.add(gui.Button('Show NF2 PF', 192, 36,
                 utils.world2Canvas((129, 43)), 5, set_NF2_PF))
+all_objects.add(gui.Button('Show BFS Path', 192, 36,
+                utils.world2Canvas((129, 54)), 5, set_BFS_PF))
 
 
 

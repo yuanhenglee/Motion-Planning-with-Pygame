@@ -19,6 +19,9 @@ class PotentialField:
                 x, y = utils.world2Canvas((i, j))
                 pygame.draw.rect(gameDisplay, color, [x, y, utils.multiplier, utils.multiplier])
 
+    def BFS( self, start ):
+        ...
+
     def mark_NF1(self, goal ):
         bitmap = copy.deepcopy(globals.obstacles_bitmap)
         bitmap[goal[0]][goal[1]] = 0
