@@ -25,29 +25,42 @@ def update_display():
 
 def set_mode_drag():
     globals.mode = 'drag'
-    # print("SET DRAG")
+    print("SET DRAG")
 
 
 def set_mode_rotate():
     globals.mode = 'rotate'
-    # print("SET ROTATION")
+    print("SET ROTATION")
 
-def toggle_show_obstacle_bitmap():
-    globals.show_bitmap = not globals.show_bitmap
+def toggle_drag_rotate():
+    if globals.mode == 'drag':
+        set_mode_rotate()
+    else:
+        set_mode_drag()
 
-def set_PF():
+def set_NF1_PF():
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
-    pf1 = PotentialField() 
-    pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
+    pf1 = PotentialField()
     pf2 = PotentialField() 
+    pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
     pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
     globals.pf = pf1 + pf2
+    globals.show_bitmap = not globals.show_bitmap
 
-# init ppygame window
+def set_NF2_PF():
+    globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
+    pf1 = PotentialField()
+    pf2 = PotentialField() 
+    pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
+    pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
+    globals.pf = pf1 + pf2
+    globals.show_bitmap = not globals.show_bitmap
+
+# init pygame window
 pygame.init()
 gameDisplay = pygame.display.set_mode(
     (178*utils.multiplier, 128*utils.multiplier))
-pygame.display.set_caption('BFP Demo')
+pygame.display.set_caption('GRA Demo')
 
 # init variables
 running = True
@@ -67,14 +80,14 @@ all_dragging_objects = set(all_objects)
 # Y: 128 = 20*6
 # button size: 192, 36
 # button space: 200, 40
-all_objects.add(gui.Button('DRAGGING MODE', 192, 36,
-                utils.world2Canvas((129, 10)), 5, set_mode_drag))
-all_objects.add(gui.Button('ROTATING MODE', 192, 36,
-                utils.world2Canvas((129, 21)), 5, set_mode_rotate))
-all_objects.add(gui.Button('Toggle PF Show', 192, 36,
-                utils.world2Canvas((129, 32)), 5, toggle_show_obstacle_bitmap))
-all_objects.add(gui.Button('set PF', 192, 36,
-                utils.world2Canvas((129, 43)), 5, set_PF))
+all_objects.add(gui.Button('Toggle Drag/Rotate', 192, 36,
+                utils.world2Canvas((129, 10)), 5, toggle_drag_rotate))
+# all_objects.add(gui.Button('Reset', 192, 36,
+#                 utils.world2Canvas((129, 21)), 5, init_window))
+all_objects.add(gui.Button('Show NF1 PF', 192, 36,
+                utils.world2Canvas((129, 32)), 5, set_NF1_PF))
+all_objects.add(gui.Button('Show NF2 PF', 192, 36,
+                utils.world2Canvas((129, 43)), 5, set_NF2_PF))
 
 
 

@@ -3,8 +3,8 @@ import numpy as np
 from numpy.core.numeric import cross
 
 
-# scale from 128*128 to 6 times bigger
-multiplier = 6
+# scale from 128*128 to 4 times bigger
+multiplier = 4
 
 
 def world2Canvas(vertex):
@@ -123,7 +123,7 @@ def new_obstacles_bitmap( obstacles = [] ):
             for c in obstacle.convex:
                 # mark where obstacle are
                 for point in convex_boundaries(c):
-                    print(point)
+                    # print(point)
                     obstacles_bitmap[point[0]][point[1]] = 255 
     return obstacles_bitmap
 
