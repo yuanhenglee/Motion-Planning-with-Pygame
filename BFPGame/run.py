@@ -110,8 +110,8 @@ while running:
         # Drag & drop
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mousePosition = pygame.mouse.get_pos()
-            print(f"{mousePosition=}")
-            print(f"{utils.canvas2World(mousePosition)=}")
+            # print(f"{mousePosition=}")
+            print(f"mouse click: {utils.canvas2World(mousePosition)}")
             for polygon in all_dragging_objects:
                 if polygon.contain(utils.canvas2World(mousePosition)):
                     dragging_obj_start_pos = polygon.config.position
