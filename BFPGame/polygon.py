@@ -65,10 +65,12 @@ class Robot_goal(Abstract_Polygon):
         self.n_control_points = _n_control_points
         self.control_points = _control_points
     
-    def get_abs_round_point(self):
+    def get_abs_round_point(self , config = None):
+        if config == None:
+            config = self.config
         abs_pos_goal = []
         for control_point in self.control_points:
-            point = utils.to_abs_pos(self.config, control_point)
+            point = utils.to_abs_pos(config, control_point)
             point = round(point[0]), round(point[1])
             abs_pos_goal.append(point)
         return abs_pos_goal
@@ -79,6 +81,15 @@ class Robot_init(Abstract_Polygon):
         super().__init__(_n_convex, _convex, _config, RED)
         self.n_control_points = _n_control_points
         self.control_points = _control_points
+    def get_abs_round_point(self , config = None):
+        if config == None:
+            config = self.config
+        abs_pos_goal = []
+        for control_point in self.control_points:
+            point = utils.to_abs_pos(config, control_point)
+            point = round(point[0]), round(point[1])
+            abs_pos_goal.append(point)
+        return abs_pos_goal
 
 
 class Obstacle(Abstract_Polygon):

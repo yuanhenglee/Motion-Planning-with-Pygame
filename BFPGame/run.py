@@ -38,27 +38,34 @@ def toggle_drag_rotate():
     else:
         set_mode_drag()
 
-def set_NF1_PF():
+def set_NF1_PF(BFS = False):
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
     pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
     pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
+    if BFS:
+        pf1.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
+        pf1.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
     globals.pf = pf1 + pf2
     globals.show_bitmap = not globals.show_bitmap
 
-def set_NF2_PF():
+def set_NF2_PF(BFS = False):
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
     pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
     pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
+    if BFS:
+        pf1.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
+        pf2.BFS( robots[0].robot_init.get_abs_round_point()[1], robots[0].robot_goal.get_abs_round_point()[1] ) 
     globals.pf = pf1 + pf2
     globals.show_bitmap = not globals.show_bitmap
 
 def set_BFS_PF():
-    globals.pf.BFS( robots[0].robot_init.get_abs_round_point()[0] ) 
-    globals.show_bitmap = not globals.show_bitmap
+    # globals.pf.BFS( robots[0].robot_init, robots[0].robot_goal ) 
+    # globals.show_bitmap = not globals.show_bitmap
+    set_NF1_PF(BFS=True)
 
 # init pygame window
 pygame.init()

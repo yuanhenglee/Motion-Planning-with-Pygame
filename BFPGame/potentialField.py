@@ -4,6 +4,7 @@ import copy
 import numpy as np
 from color import *
 import globals
+from collections import deque
 
 cost = 1
 class PotentialField:
@@ -19,8 +20,31 @@ class PotentialField:
                 x, y = utils.world2Canvas((i, j))
                 pygame.draw.rect(gameDisplay, color, [x, y, utils.multiplier, utils.multiplier])
 
-    def BFS( self, start ):
-        ...
+    def BFS( self, xinit, xgoal ):
+        openQ = deque([xinit])
+        T_dict = {xinit: None }
+        visited = np.full((128,128), False, dtype = bool)
+        success = False
+        while openQ and not success:
+            x = openQ.popleft()
+            for neighbor in utils.findNeighbors(x):
+                if self.bitmap[neighbor[0]][neighbor[1]] < 254 and not visited[neighbor[0]][neighbor[1]]:
+                    T_dict[neighbor] = x
+                    openQ.append(neighbor)
+                    visited[neighbor[0]][neighbor[1]] = True
+                    if neighbor == xgoal :
+                        print("Path Found")
+                        success = True
+        if success:
+            next_point = T_dict[xgoal]
+            while next_point!=xinit:
+                self.bitmap[next_point[0]][next_point[1]] = 0
+                next_point = T_dict[next_point]
+        else:
+            print( "Path Not Found ...")
+        
+
+
 
     def mark_NF1(self, goal ):
         bitmap = copy.deepcopy(globals.obstacles_bitmap)
