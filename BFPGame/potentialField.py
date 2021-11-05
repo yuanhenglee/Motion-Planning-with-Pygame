@@ -4,7 +4,6 @@ import copy
 import numpy as np
 from color import *
 import globals
-from collections import deque
 
 cost = 1
 class PotentialField:
@@ -21,16 +20,25 @@ class PotentialField:
                 pygame.draw.rect(gameDisplay, color, [x, y, utils.multiplier, utils.multiplier])
 
     def BFS( self, xinit, xgoal ):
-        openQ = deque([xinit])
+        openQ = [[]for i in range(256)]
+        pf_score = int(self.bitmap[xinit[0]][xinit[1]])
+        openQ[pf_score] = [xinit]
+        n_openQ = 1
+        min_PF_index = pf_score
         T_dict = {xinit: None }
         visited = np.full((128,128), False, dtype = bool)
         success = False
-        while openQ and not success:
-            x = openQ.popleft()
+        while n_openQ > 0 and not success:
+            # pop best point from openQ
+            x = openQ[min_PF_index].pop()
+            n_openQ -= 1
             for neighbor in utils.findNeighbors(x):
-                if self.bitmap[neighbor[0]][neighbor[1]] < 254 and not visited[neighbor[0]][neighbor[1]]:
+                pf_score = int(self.bitmap[neighbor[0]][neighbor[1]])
+                if pf_score < 254 and not visited[neighbor[0]][neighbor[1]]:
                     T_dict[neighbor] = x
-                    openQ.append(neighbor)
+                    openQ[pf_score].append(neighbor)
+                    min_PF_index = min( min_PF_index, pf_score)
+                    n_openQ += 1
                     visited[neighbor[0]][neighbor[1]] = True
                     if neighbor == xgoal :
                         print("Path Found")
@@ -62,7 +70,11 @@ class PotentialField:
             for q in Li:
                 for neighbor in utils.findNeighbors(q):
                     if bitmap[neighbor[0]][neighbor[1]] == 254:
-                        bitmap[neighbor[0]][neighbor[1]] = i+cost
+                        # prevent bimap excess 255
+                        if i+cost > 255:
+                            bitmap[neighbor[0]][neighbor[1]] = 255
+                        else:
+                            bitmap[neighbor[0]][neighbor[1]] = i+cost
                         if i+cost in l_configs:
                             l_configs[i+cost].append(neighbor)
                         else:
