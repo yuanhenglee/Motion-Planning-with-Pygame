@@ -1,4 +1,3 @@
-import sys
 from initialize import initialize
 import utils
 from color import *
