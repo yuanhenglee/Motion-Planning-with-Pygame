@@ -6,6 +6,10 @@ from color import *
 import globals
 
 cost = 1
+
+def get_arbitration_potential( robot_init, config, pf1, pf2 ) -> float :
+    return 0
+
 class PotentialField:
     def __init__(self):
         self.bitmap = np.full( (128,128), 0)
@@ -15,7 +19,10 @@ class PotentialField:
             for j in range(128):
                 color = 255 - self.bitmap[i][j]
                 color = 0 if color<0 else color
-                color = (color, color, color)
+                if color > 255:
+                    color = RED
+                else:
+                    color = (color, color, color)
                 x, y = utils.world2Canvas((i, j))
                 pygame.draw.rect(gameDisplay, color, [x, y, utils.multiplier, utils.multiplier])
 
