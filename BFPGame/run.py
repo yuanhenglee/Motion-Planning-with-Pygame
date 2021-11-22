@@ -7,6 +7,7 @@ import gui
 import globals
 from potentialField import PotentialField
 import numpy as np
+from path import Path
 
 import pygame
 from pygame.locals import QUIT
@@ -20,6 +21,10 @@ def update_display():
 
     if globals.show_bitmap and globals.pf != None:
         globals.pf.show_bitmap(gameDisplay)
+
+    if globals.show_path and globals.path != None:
+        globals.path.show_path(gameDisplay, robots[0].robot_init)
+
 
     pygame.display.update()
 
@@ -40,6 +45,9 @@ def toggle_drag_rotate():
         set_mode_drag()
 
 def set_NF1_PF(BFS = False):
+    if globals.show_bitmap:
+        globals.show_bitmap = False
+        return
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
@@ -52,6 +60,9 @@ def set_NF1_PF(BFS = False):
     globals.show_bitmap = not globals.show_bitmap
 
 def set_NF2_PF(BFS = False):
+    if globals.show_bitmap:
+        globals.show_bitmap = False
+        return
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
@@ -64,6 +75,9 @@ def set_NF2_PF(BFS = False):
     globals.show_bitmap = not globals.show_bitmap
 
 def set_BFS_PF():
+    if globals.show_path:
+        globals.show_path = False
+        return
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
@@ -75,7 +89,7 @@ def set_BFS_PF():
     robot_init = robots[0].robot_init
 
 
-    openQ = [[]for i in range(255*2)]
+    openQ = [[]for i in range(255*2+1)]
     pf_score = int(get_arbitration_potential(robot_init, xinit, pf1, pf2))
     openQ[pf_score] = [xinit]
     # n_openQ = 1
@@ -99,7 +113,7 @@ def set_BFS_PF():
             neighbor_r = int(neighbor.rotation)
             pf_score = int(get_arbitration_potential(robot_init, neighbor, pf1, pf2))
             if pf_score < 254*2 and not visited[neighbor_x][neighbor_y][neighbor_r]:
-                if pf_score < 3:
+                if pf_score < 5:
                     print("Path Found")
                     success = True
                     T_dict[xgoal] = x
@@ -111,18 +125,19 @@ def set_BFS_PF():
                     # n_openQ += 1
                     visited[neighbor_x][neighbor_y][neighbor_r] = True
                 # if neighbor == xgoal :
-    globals.pf = pf1
+    globals.path = Path()
+    globals.path.append(xgoal)
     if success:
         next_point = T_dict[xgoal]
         while next_point!=xinit:
             x = int(next_point.position[0])
             y = int(next_point.position[1])
-            globals.pf.bitmap[x][y] = -1
+            globals.path.append(next_point)
             next_point = T_dict[next_point]
     else:
         print( "Path Not Found ...")
 
-    globals.show_bitmap = not globals.show_bitmap
+    globals.show_path = not globals.show_path
 
 # init pygame window
 pygame.init()

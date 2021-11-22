@@ -21,6 +21,11 @@ class Abstract_Polygon:
             for v in c.vertices:
                 c.abs_vertices.append(utils.to_abs_pos(self.config, v))
 
+    def draw_skeleton(self, gameDisplay):
+        for c in self.convex:
+            canvas_vertices = [utils.world2Canvas(v) for v in c.abs_vertices]
+            pygame.draw.polygon(gameDisplay, self.color, canvas_vertices, 1)
+
     def draw(self, gameDisplay):
         for c in self.convex:
             canvas_vertices = [utils.world2Canvas(v) for v in c.abs_vertices]
