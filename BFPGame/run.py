@@ -67,8 +67,8 @@ def set_BFS_PF():
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
-    pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
-    pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
+    pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
+    pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
 
     xinit = robots[0].robot_init.config
     xgoal = robots[0].robot_goal.config
@@ -85,19 +85,25 @@ def set_BFS_PF():
     success = False
     while not success:
         # pop best point from openQ
-        
-        x = openQ[min_PF_index].pop()
+        if not 0 <= min_PF_index < 255*2 or not openQ[min_PF_index] :
+            print("Fail")
+            break
+        else:
+            x = openQ[min_PF_index].pop()
+            if not openQ[min_PF_index]:
+                while min_PF_index<255*2 and not openQ[min_PF_index]: min_PF_index+=1
         # n_openQ -= 1
         for neighbor in utils.findNeighbors(x):
             neighbor_x = int(neighbor.position[0])
             neighbor_y = int(neighbor.position[1])
             neighbor_r = int(neighbor.rotation)
             pf_score = int(get_arbitration_potential(robot_init, neighbor, pf1, pf2))
-            if pf_score < 254 and not visited[neighbor_x][neighbor_y][neighbor_r]:
-                if pf_score == 0:
+            if pf_score < 254*2 and not visited[neighbor_x][neighbor_y][neighbor_r]:
+                if pf_score < 3:
                     print("Path Found")
                     success = True
                     T_dict[xgoal] = x
+                    break
                 else:
                     T_dict[neighbor] = x
                     openQ[pf_score].append(neighbor)
@@ -105,13 +111,13 @@ def set_BFS_PF():
                     # n_openQ += 1
                     visited[neighbor_x][neighbor_y][neighbor_r] = True
                 # if neighbor == xgoal :
+    globals.pf = pf1
     if success:
-        globals.pf = pf1
         next_point = T_dict[xgoal]
         while next_point!=xinit:
             x = int(next_point.position[0])
             y = int(next_point.position[1])
-            globals.pf.bitmap[x][y] = 0
+            globals.pf.bitmap[x][y] = -1
             next_point = T_dict[next_point]
     else:
         print( "Path Not Found ...")

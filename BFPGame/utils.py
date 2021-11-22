@@ -7,7 +7,8 @@ from polygon import *
 multiplier = 4
 
 # radius resolution
-n_angle_seg = 8
+n_angle_seg = 12
+
 
 def valid_point( p ):
     if 0 <= p[0] < 128 and 0<= p[1] < 128:
