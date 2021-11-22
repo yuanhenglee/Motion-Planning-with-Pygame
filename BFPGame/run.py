@@ -1,10 +1,12 @@
+from potentialField import get_arbitration_potential
 from initialize import initialize
 import utils
 from color import *
-import polygon
+from polygon import * 
 import gui
 import globals
 from potentialField import PotentialField
+import numpy as np
 
 import pygame
 from pygame.locals import QUIT
@@ -45,7 +47,7 @@ def set_NF1_PF(BFS = False):
     pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
     if BFS:
         pf1.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
-        pf1.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
+        pf2.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
     globals.pf = pf1 + pf2
     globals.show_bitmap = not globals.show_bitmap
 
@@ -62,9 +64,59 @@ def set_NF2_PF(BFS = False):
     globals.show_bitmap = not globals.show_bitmap
 
 def set_BFS_PF():
-    # globals.pf.BFS( robots[0].robot_init, robots[0].robot_goal ) 
-    # globals.show_bitmap = not globals.show_bitmap
-    set_NF1_PF(BFS=True)
+    globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
+    pf1 = PotentialField()
+    pf2 = PotentialField() 
+    pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
+    pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
+
+    xinit = robots[0].robot_init.config
+    xgoal = robots[0].robot_goal.config
+    robot_init = robots[0].robot_init
+
+
+    openQ = [[]for i in range(255*2)]
+    pf_score = int(get_arbitration_potential(robot_init, xinit, pf1, pf2))
+    openQ[pf_score] = [xinit]
+    # n_openQ = 1
+    min_PF_index = pf_score
+    T_dict = {xinit: None }
+    visited = np.full((128,128,360), False, dtype = bool)
+    success = False
+    while not success:
+        # pop best point from openQ
+        
+        x = openQ[min_PF_index].pop()
+        # n_openQ -= 1
+        for neighbor in utils.findNeighbors(x):
+            neighbor_x = int(neighbor.position[0])
+            neighbor_y = int(neighbor.position[1])
+            neighbor_r = int(neighbor.rotation)
+            pf_score = int(get_arbitration_potential(robot_init, neighbor, pf1, pf2))
+            if pf_score < 254 and not visited[neighbor_x][neighbor_y][neighbor_r]:
+                if pf_score == 0:
+                    print("Path Found")
+                    success = True
+                    T_dict[xgoal] = x
+                else:
+                    T_dict[neighbor] = x
+                    openQ[pf_score].append(neighbor)
+                    min_PF_index = min( min_PF_index, pf_score)
+                    # n_openQ += 1
+                    visited[neighbor_x][neighbor_y][neighbor_r] = True
+                # if neighbor == xgoal :
+    if success:
+        globals.pf = pf1
+        next_point = T_dict[xgoal]
+        while next_point!=xinit:
+            x = int(next_point.position[0])
+            y = int(next_point.position[1])
+            globals.pf.bitmap[x][y] = 0
+            next_point = T_dict[next_point]
+    else:
+        print( "Path Not Found ...")
+
+    globals.show_bitmap = not globals.show_bitmap
 
 # init pygame window
 pygame.init()

@@ -1,11 +1,18 @@
 import math
 import numpy as np
 from numpy.core.numeric import cross
-
+from polygon import *
 
 # scale from 128*128 to 4 times bigger
 multiplier = 4
 
+# radius resolution
+n_angle_seg = 8
+
+def valid_point( p ):
+    if 0 <= p[0] < 128 and 0<= p[1] < 128:
+        return True
+    return False
 
 def world2Canvas(vertex):
     return round(vertex[0]*multiplier), round((128-vertex[1])*multiplier)
@@ -91,12 +98,10 @@ def convex_boundaries(convex):
 
 def findNeighbors(point):
     neighbors = []
-    x, y = point[0], point[1]
-    # for offset_x in range(-1,2):
-    #     if 0 <= x + offset_x < 128:
-    #         for offset_y in range(-1,2):
-    #             if 0 <= y + offset_y < 128 and (offset_x!=0 or offset_y!=0):
-    #                 neighbors.append((x+offset_x, y+offset_y))
+    if isinstance( point, Config ):
+        x, y = point.position[0], point.position[1]
+    else:
+        x, y = point[0], point[1]
     if x+1 < 128:
         neighbors.append((x+1, y))
     if x-1 >= 0:
@@ -105,7 +110,15 @@ def findNeighbors(point):
         neighbors.append((x, y+1))
     if y-1 >= 0:
         neighbors.append((x, y-1))
-    return neighbors
+    if isinstance( point, Config ):
+        neighbors3d = []
+        for n in neighbors:
+            neighbors3d.append( Config( n, point.rotation ))
+        neighbors3d.append( Config( point.position, (point.rotation+360/n_angle_seg)%360 ))
+        neighbors3d.append( Config( point.position, (point.rotation-360/n_angle_seg+360)%360 ))
+        return neighbors3d
+    else:
+        return neighbors
 
 def findBestNeighbor( point, distance ):
     bestNeighbor = None

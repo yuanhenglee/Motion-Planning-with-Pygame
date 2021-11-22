@@ -8,11 +8,22 @@ import globals
 cost = 1
 
 def get_arbitration_potential( robot_init, config, pf1, pf2 ) -> float :
-    return 0
+    control_points_pos = robot_init.get_abs_round_point( config = config )
+    p1 = control_points_pos[0]
+    p2 = control_points_pos[1]
+    if utils.valid_point(p1) and utils.valid_point(p2):
+        potential_val = pf1.get_potential_val(p1) + pf2.get_potential_val(p2)
+    else:
+        potential_val = 255*2
+    
+    return potential_val
 
 class PotentialField:
     def __init__(self):
         self.bitmap = np.full( (128,128), 0)
+
+    def get_potential_val(self, point ):
+        return self.bitmap[point[0]][point[1]]
 
     def show_bitmap(self, gameDisplay):
         for i in range(128):
