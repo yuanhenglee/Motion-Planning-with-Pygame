@@ -142,7 +142,7 @@ def set_BFS_PF():
     else:
         print( "Path Not Found ...")
 
-    print("Time Cose:", time.time() - start_time, "sec")
+    print("Time Cost:", time.time() - start_time, "seconds")
 
     globals.show_path = not globals.show_path
 
