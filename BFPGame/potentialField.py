@@ -11,10 +11,12 @@ def get_arbitration_potential( robot_init, config, pf1, pf2 ) -> float :
     control_points_pos = robot_init.get_abs_round_point( config = config )
     p1 = control_points_pos[0]
     p2 = control_points_pos[1]
-    if utils.valid_point(p1) and utils.valid_point(p2):
-        potential_val = pf1.get_potential_val(p1) + pf2.get_potential_val(p2)
-    else:
+    if not utils.valid_point(p1) or not utils.valid_point(p2):
         potential_val = 255*2
+    elif utils.collision_detect( config, robot_init ):
+        potential_val = 255*2
+    else:
+        potential_val = pf1.get_potential_val(p1) + pf2.get_potential_val(p2)
     
     return potential_val
 

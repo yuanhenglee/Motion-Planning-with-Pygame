@@ -3,6 +3,7 @@ import numpy as np
 from numpy.core.numeric import cross
 from polygon import *
 import copy
+import globals
 
 # scale from 128*128 to 4 times bigger
 multiplier = 4
@@ -10,13 +11,27 @@ multiplier = 4
 # radius resolution
 n_angle_seg = 12
 
+# check collision by edge intersection
+# def collision_detect( config, robot_init ) -> bool:
+#     robot = copy.deepcopy(robot_init)
+#     robot.config = config
+#     robot.update_abs_vertices()
+#     for c in robot.convex:
+#         for line in c.abs_lines:
+#             ...
+
+# check collision by bitmap
 def collision_detect( config, robot_init ) -> bool:
     robot = copy.deepcopy(robot_init)
     robot.config = config
     robot.update_abs_vertices()
     for c in robot.convex:
-        for line in c.abs_lines:
-            ...
+        for point in convex_boundaries(c):
+            if globals.obstacles_bitmap[point[0]][point[1]] == 255:
+                return True
+    return False
+
+
 
 def line_cross( p1, p2, p3, p4 ) -> bool:
     v12 = formVector( p1, p2)
