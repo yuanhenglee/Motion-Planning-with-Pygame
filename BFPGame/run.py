@@ -8,6 +8,7 @@ import globals
 from potentialField import PotentialField
 import numpy as np
 from path import Path
+import time
 
 import pygame
 from pygame.locals import QUIT
@@ -78,6 +79,10 @@ def set_BFS_PF():
     if globals.show_path:
         globals.show_path = False
         return
+
+    # start bfs timer
+    start_time = time.time()
+
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
@@ -136,6 +141,8 @@ def set_BFS_PF():
             next_point = T_dict[next_point]
     else:
         print( "Path Not Found ...")
+
+    print("Time Cose:", time.time() - start_time, "sec")
 
     globals.show_path = not globals.show_path
 
