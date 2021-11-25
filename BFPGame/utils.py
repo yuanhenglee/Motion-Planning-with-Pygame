@@ -2,12 +2,39 @@ import math
 import numpy as np
 from numpy.core.numeric import cross
 from polygon import *
+import copy
 
 # scale from 128*128 to 4 times bigger
 multiplier = 4
 
 # radius resolution
 n_angle_seg = 12
+
+def collision_detect( config, robot_init ) -> bool:
+    robot = copy.deepcopy(robot_init)
+    robot.config = config
+    robot.update_abs_vertices()
+    for c in robot.convex:
+        for line in c.abs_lines:
+            ...
+
+def line_cross( p1, p2, p3, p4 ) -> bool:
+    v12 = formVector( p1, p2)
+    v13 = formVector( p1, p3)
+    v14 = formVector( p1, p4)
+    v31 = formVector( p3, p1)
+    v32 = formVector( p3, p2)
+    v34 = formVector( p3, p4)
+    v12_v = rotate90(v12)
+    v34_v = rotate90(v34)
+    return np.inner(v12_v,v13) * np.inner(v12_v,v14) < 0\
+        and np.inner(v34_v,v31) * np.inner(v34_v,v32) < 0
+
+
+def rotate90( vector ):
+    x = -1 * vector[1]
+    y = vector[0]
+    return x,y
 
 
 def valid_point( p ):
@@ -144,5 +171,5 @@ def new_obstacles_bitmap( obstacles = [] ):
 
 if __name__ == '__main__':
     print(
-        fit_grid((1,1), (1,9))
+        line_cross( (0,0), (5,5), (5,0), (2.49,2.5))
     )

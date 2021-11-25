@@ -20,6 +20,8 @@ class Abstract_Polygon:
             c.abs_vertices = []
             for v in c.vertices:
                 c.abs_vertices.append(utils.to_abs_pos(self.config, v))
+            c.abs_lines = zip(c.abs_vertices[:-1], c.abs_vertices[1:])
+            c.abs_lines.append(c.abs_vertices[-1], c.abs_vertices[0])
 
     def draw_skeleton(self, gameDisplay):
         for c in self.convex:
