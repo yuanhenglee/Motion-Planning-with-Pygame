@@ -9,47 +9,92 @@ import globals
 multiplier = 4
 
 # radius resolution
-n_angle_seg = 12
+n_angle_seg = 24 
 
 # check collision by edge intersection
-# def collision_detect( config, robot_init ) -> bool:
+def collision_detect( config, robot_init, obstacles ) -> bool:
+    robot = copy.deepcopy(robot_init)
+    robot.config = config
+    robot.update_abs_vertices()
+    robot_lines = []
+    for c in robot.convex:
+        for line in c.abs_lines:
+            robot_lines.append(line)
+    
+    for o in obstacles:
+        for c in o.convex:
+            for line in c.abs_lines:
+                for r_line in robot_lines:
+                    p1, p2 = line
+                    p3, p4 = r_line
+                    if line_cross( p1, p2, p3, p4 ):
+                        # print( "LINE CROSS:", line, r_line)
+                        return True
+    return False
+
+# check collision by bitmap
+# def collision_detect( config, robot_init, obstacles ) -> bool:
 #     robot = copy.deepcopy(robot_init)
 #     robot.config = config
 #     robot.update_abs_vertices()
 #     for c in robot.convex:
-#         for line in c.abs_lines:
-#             ...
+#         for point in convex_boundaries(c):
+#             if globals.obstacles_bitmap[point[0]][point[1]] == 255:
+#                 return True
+#     return False
 
-# check collision by bitmap
-def collision_detect( config, robot_init ) -> bool:
-    robot = copy.deepcopy(robot_init)
-    robot.config = config
-    robot.update_abs_vertices()
-    for c in robot.convex:
-        for point in convex_boundaries(c):
-            if globals.obstacles_bitmap[point[0]][point[1]] == 255:
-                return True
+def orientation( p, q, r):
+    val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+ 
+    if val == 0:
+        return 0
+    elif val > 0:
+        return 1
+    else:
+        return 2
+
+def line_cross( p1, q1, p2, q2):
+    if max(p1[0], q1[0]) < min(p2[0], q2[0]) or max(p2[0], q2[0]) < min(p1[0], q1[0]) or max(p1[1], q1[1]) < min(p2[1], q2[1]) or max(p2[1], q2[1]) < min(p1[1], q1[1]) :
+        return False
+
+    o1 = orientation(p1, q1, p2)
+    o2 = orientation(p1, q1, q2)
+    o3 = orientation(p2, q2, p1)
+    o4 = orientation(p2, q2, q1)
+ 
+    if (o1 != o2 and o3 != o4):
+        return True 
+ 
+    if (o1 == 0 and onSegment(p1, p2, q1)): return True
+    if (o2 == 0 and onSegment(p1, q2, q1)): return True
+    if (o3 == 0 and onSegment(p2, p1, q2)): return True
+    if (o4 == 0 and onSegment(p2, q1, q2)): return True
+ 
     return False
 
+def onSegment( p, q, r ):
+    if (q[0] <= max(p[0], r[0]) and q[0] >= min(p[0], r[0]) and q[1] <= max(p[1], r[1]) and q[1] >= min(p[1], r[1])):
+        return True
+ 
+    return False 
+
+# def line_cross( p1, p2, p3, p4 ) -> bool:
+#     v12 = formVector( p1, p2)
+#     v13 = formVector( p1, p3)
+#     v14 = formVector( p1, p4)
+#     v31 = formVector( p3, p1)
+#     v32 = formVector( p3, p2)
+#     v34 = formVector( p3, p4)
+#     v12_v = rotate90(v12)
+#     v34_v = rotate90(v34)
+#     return (np.inner(v12_v,v13) * np.inner(v12_v,v14)) < 0\
+#         and (np.inner(v34_v,v31) * np.inner(v34_v,v32)) < 0
 
 
-def line_cross( p1, p2, p3, p4 ) -> bool:
-    v12 = formVector( p1, p2)
-    v13 = formVector( p1, p3)
-    v14 = formVector( p1, p4)
-    v31 = formVector( p3, p1)
-    v32 = formVector( p3, p2)
-    v34 = formVector( p3, p4)
-    v12_v = rotate90(v12)
-    v34_v = rotate90(v34)
-    return np.inner(v12_v,v13) * np.inner(v12_v,v14) < 0\
-        and np.inner(v34_v,v31) * np.inner(v34_v,v32) < 0
-
-
-def rotate90( vector ):
-    x = -1 * vector[1]
-    y = vector[0]
-    return x,y
+# def rotate90( vector ):
+#     x = -1 * vector[1]
+#     y = vector[0]
+#     return x,y
 
 
 def valid_point( p ):

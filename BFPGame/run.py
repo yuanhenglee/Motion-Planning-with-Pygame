@@ -117,7 +117,7 @@ def set_BFS_PF():
             neighbor_y = int(neighbor.position[1])
             neighbor_r = int(neighbor.rotation)
             pf_score = int(get_arbitration_potential(robot_init, neighbor, pf1, pf2))
-            if pf_score < 254*2 and not visited[neighbor_x][neighbor_y][neighbor_r] and not utils.collision_detect( neighbor, robot_init ):
+            if pf_score < 254*2 and not visited[neighbor_x][neighbor_y][neighbor_r] and not utils.collision_detect( neighbor, robot_init , obstacles ):
                 if pf_score < 5:
                     print("Path Found")
                     success = True
