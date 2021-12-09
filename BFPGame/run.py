@@ -9,6 +9,7 @@ from potentialField import PotentialField
 import numpy as np
 from path import Path
 import time
+import sys
 
 import pygame
 from pygame.locals import QUIT
@@ -153,12 +154,16 @@ gameDisplay = pygame.display.set_mode(
 pygame.display.set_caption('GRA Demo')
 
 # init variables
+globals.robot_dat_path = "Dat/robot" + sys.argv[1] + ".dat"
+globals.obstacle_dat_path = "Dat/obstacle" + sys.argv[1] + ".dat"
+print( globals.robot_dat_path)
+print( globals.obstacle_dat_path)
 running = True
 dragging_obj = None
 dragging_obj_start_pos = (0, 0)
 dragging_obj_start_rotation = 0
 dragging_mouse_start_pos = (0, 0)
-robots, obstacles = initialize(gameDisplay)
+robots, obstacles = initialize()
 all_objects = set(obstacles)
 for r in robots:
     all_objects.add(r.robot_init)
