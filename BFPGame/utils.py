@@ -9,7 +9,7 @@ import globals
 multiplier = 4
 
 # radius resolution
-n_angle_seg = 24 
+n_angle_seg = 12 
 
 # check collision by edge intersection
 def collision_detect( config, robot_init, obstacles ) -> bool:

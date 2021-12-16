@@ -50,6 +50,10 @@ def set_NF1_PF(BFS = False):
     if globals.show_bitmap:
         globals.show_bitmap = False
         return
+
+    # PF timer
+    start_time = time.time()
+
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
     pf2 = PotentialField() 
@@ -61,7 +65,9 @@ def set_NF1_PF(BFS = False):
     globals.pf = pf1 + pf2
     globals.show_bitmap = not globals.show_bitmap
 
-def set_NF2_PF(BFS = False):
+    print("NF1 PF Time Cost:", time.time() - start_time, "seconds")
+
+def set_NF2_PF():
     if globals.show_bitmap:
         globals.show_bitmap = False
         return
@@ -70,9 +76,6 @@ def set_NF2_PF(BFS = False):
     pf2 = PotentialField() 
     pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
     pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
-    if BFS:
-        pf1.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
-        pf2.BFS( robots[0].robot_init.get_abs_round_point()[1], robots[0].robot_goal.get_abs_round_point()[1] ) 
     globals.pf = pf1 + pf2
     globals.show_bitmap = not globals.show_bitmap
 
@@ -81,7 +84,7 @@ def set_BFS_PF():
         globals.show_path = False
         return
 
-    # start bfs timer
+    # PF timer
     start_time = time.time()
 
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
@@ -90,10 +93,14 @@ def set_BFS_PF():
     pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
     pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
 
+    print("NF1 PF Time Cost:", time.time() - start_time, "seconds")
+
     xinit = robots[0].robot_init.config
     xgoal = robots[0].robot_goal.config
     robot_init = robots[0].robot_init
 
+    # start bfs timer
+    start_time = time.time()
 
     openQ = [[]for i in range(255*2+1)]
     pf_score = int(get_arbitration_potential(robot_init, xinit, pf1, pf2))
@@ -143,7 +150,7 @@ def set_BFS_PF():
     else:
         print( "Path Not Found ...")
 
-    print("Time Cost:", time.time() - start_time, "seconds")
+    print("BFS Time Cost:", time.time() - start_time, "seconds")
 
     globals.show_path = not globals.show_path
 
