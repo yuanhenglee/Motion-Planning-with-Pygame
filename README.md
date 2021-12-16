@@ -1,16 +1,14 @@
 a planar demo. still working on...
 ## Usage
-Demo: 
+Demo( Dat0 ): 
 ```
 make init && make run
 ```
 
 ## Note
-
-### speed up collision detection
-- c-obstacle
-- heuristic method for fewer check
-- better DS for BFS 
-
-## smoothing config path
-- diff befor config: should consider if theta rotate clockwise or not
+- [X] Read Data
+- [X] Building Potential Field
+    - NF1
+    - NF2 ( TODO: Slow in Dat1 )
+- [X] BFS Path Finding
+- [ ] Path Smoothing
