@@ -11,6 +11,9 @@ multiplier = 4
 # radius resolution
 n_angle_seg = 12 
 
+# min move step
+min_step = 1
+
 # check collision by edge intersection
 def collision_detect( config, robot_init, obstacles ) -> bool:
     robot = copy.deepcopy(robot_init)
@@ -22,6 +25,9 @@ def collision_detect( config, robot_init, obstacles ) -> bool:
             robot_lines.append(line)
     
     for o in obstacles:
+        # skip obstacles too far away from robot
+        if not rect_bound_overlap( o.rect_bound, robot.rect_bound):
+            continue
         for c in o.convex:
             for line in c.abs_lines:
                 for r_line in robot_lines:
@@ -190,14 +196,14 @@ def findNeighbors(point):
         x, y = point.position[0], point.position[1]
     else:
         x, y = point[0], point[1]
-    if x+1 < 128:
-        neighbors.append((x+1, y))
-    if x-1 >= 0:
-        neighbors.append((x-1, y))
-    if y+1 < 128:
-        neighbors.append((x, y+1))
-    if y-1 >= 0:
-        neighbors.append((x, y-1))
+    if x+min_step < 128:
+        neighbors.append((x+min_step, y))
+    if x-min_step >= 0:
+        neighbors.append((x-min_step, y))
+    if y+min_step < 128:
+        neighbors.append((x, y+min_step))
+    if y-min_step >= 0:
+        neighbors.append((x, y-min_step))
     if isinstance( point, Config ):
         neighbors3d = []
         for n in neighbors:
@@ -228,6 +234,10 @@ def new_obstacles_bitmap( obstacles = [] ):
                     obstacles_bitmap[point[0]][point[1]] = 255 
     return obstacles_bitmap
 
+def rect_bound_overlap( rb1:tuple, rb2:tuple )->bool:
+    if rb1[0] < rb2[2] or rb1[1] < rb2[3] or rb1[2] > rb2[0] or rb1[3] > rb2[1]:
+        return False
+    return True
 
 if __name__ == '__main__':
     print(

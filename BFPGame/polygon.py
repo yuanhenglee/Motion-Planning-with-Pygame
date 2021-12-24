@@ -4,6 +4,7 @@ import utils
 import pygame
 from color import *
 import copy
+import numpy as np
 
 
 class Abstract_Polygon:
@@ -16,12 +17,22 @@ class Abstract_Polygon:
         self.update_abs_vertices()
 
     def update_abs_vertices(self):
+        max_x = -1
+        max_y = -1
+        min_x = 129
+        min_y = 129
         for c in self.convex:
             c.abs_vertices = []
             for v in c.vertices:
-                c.abs_vertices.append(utils.to_abs_pos(self.config, v))
+                abs_v = utils.to_abs_pos(self.config, v)
+                c.abs_vertices.append(abs_v)
+                max_x = max(max_x, abs_v[0])
+                max_y = max(max_y, abs_v[1])
+                min_x = min(min_x, abs_v[0])
+                min_y = min(min_y, abs_v[1])
             c.abs_lines = list(zip(c.abs_vertices[:-1], c.abs_vertices[1:]))
             c.abs_lines.append((c.abs_vertices[-1], c.abs_vertices[0]))
+        self.rect_bound = ( max_x, max_y, min_x, min_y )
 
     def draw_skeleton(self, gameDisplay):
         for c in self.convex:
