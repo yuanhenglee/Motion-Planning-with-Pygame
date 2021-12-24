@@ -218,8 +218,12 @@ while running:
                     dragging_obj.config.set_config(position=new_pos)
                 elif globals.mode == 'rotate':
                     new_rotation = utils.mouse2Rotation(
-                        dragging_mouse_start_pos, mousePosition, dragging_obj.convex[0].abs_vertices[0]) + dragging_obj_start_rotation
+                        utils.canvas2World(dragging_mouse_start_pos), utils.canvas2World(mousePosition), dragging_obj.center) + dragging_obj_start_rotation
+                    center_before_rotate = dragging_obj.center
                     dragging_obj.config.set_config(rotation=new_rotation)
+                    dragging_obj.update_abs_vertices()
+                    dragging_obj.recenter( center_before_rotate )
+
                 dragging_obj.update_abs_vertices()
                 lastMousePosition = mousePosition
 

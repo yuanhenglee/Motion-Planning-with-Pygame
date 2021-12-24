@@ -57,6 +57,11 @@ class Abstract_Polygon:
     def reset_moving(self):
         self.color = self.default_color
 
+    def recenter( self, new_center ):
+        old_center = self.center
+        new_config_pos = ( self.config.position[0] + new_center[0] - old_center[0], self.config.position[1] + new_center[1] - old_center[1] )
+        self.config.set_config( position = new_config_pos )
+
     def __repr__(self):
         return repr(self.convex)
 

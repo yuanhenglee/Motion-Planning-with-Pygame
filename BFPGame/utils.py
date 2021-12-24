@@ -134,7 +134,10 @@ def mouse2Rotation(v1, v2, center):
     vector2 = formVector(center, v2)
     theta = math.atan2(vector2[1], vector2[0]) - \
         math.atan2(vector1[1], vector1[0])
-    return math.degrees(theta)
+    rotation =  math.degrees(theta)
+    print( f"{v1=} {v2=} {center=} {rotation=}")
+    return rotation
+
 
 
 def to_abs_pos(config, vertice):
