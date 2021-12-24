@@ -5,6 +5,7 @@ mode = 'drag'
 show_bitmap = False
 pf = None
 
+path_showing_step = 3
 show_path = False
 path = None
 

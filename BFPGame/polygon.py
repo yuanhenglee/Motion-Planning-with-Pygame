@@ -33,6 +33,7 @@ class Abstract_Polygon:
             c.abs_lines = list(zip(c.abs_vertices[:-1], c.abs_vertices[1:]))
             c.abs_lines.append((c.abs_vertices[-1], c.abs_vertices[0]))
         self.rect_bound = ( max_x, max_y, min_x, min_y )
+        self.center = ( (max_x+min_x)/2, (max_y+min_y)/2)
 
     def draw_skeleton(self, gameDisplay):
         for c in self.convex:

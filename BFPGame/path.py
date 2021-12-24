@@ -2,10 +2,11 @@ import pygame
 from color import *
 import utils
 import copy
+import globals
 
 class Path(list):
     def show_path(self, gameDisplay, robot_init ):
-        for config in self:
+        for config in self[::globals.path_showing_step]:
             color = RED
             robot = copy.deepcopy(robot_init)
             robot.config = config

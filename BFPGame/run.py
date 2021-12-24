@@ -46,54 +46,45 @@ def toggle_drag_rotate():
     else:
         set_mode_drag()
 
-def set_NF1_PF(BFS = False):
+def set_NF1_PF():
     if globals.show_bitmap:
         globals.show_bitmap = False
         return
-
-    # PF timer
-    start_time = time.time()
-
-    globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
-    pf1 = PotentialField()
-    pf2 = PotentialField() 
-    pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
-    pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
-    if BFS:
-        pf1.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
-        pf2.BFS( robots[0].robot_init.get_abs_round_point()[0], robots[0].robot_goal.get_abs_round_point()[0]  )
-    globals.pf = pf1 + pf2
+    update_PF( "NF1" )
     globals.show_bitmap = not globals.show_bitmap
 
-    print("NF1 PF Time Cost:", time.time() - start_time, "seconds")
 
 def set_NF2_PF():
     if globals.show_bitmap:
         globals.show_bitmap = False
         return
+    update_PF( "NF2" )
+    globals.show_bitmap = not globals.show_bitmap
+
+def update_PF( method = "NF1"):
+    # PF timer
+    start_time = time.time()
+
     globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
     pf1 = PotentialField()
-    pf2 = PotentialField() 
-    pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
-    pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
+    pf2 = PotentialField()
+    if method == "NF1":
+        pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
+        pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
+    elif method == "NF2":
+        pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
+        pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
     globals.pf = pf1 + pf2
-    globals.show_bitmap = not globals.show_bitmap
+    print( method,"PF Time Cost:", time.time() - start_time, "seconds")
+    
+    return pf1,pf2
 
 def set_BFS_PF():
     if globals.show_path:
         globals.show_path = False
         return
 
-    # PF timer
-    start_time = time.time()
-
-    globals.obstacles_bitmap = utils.new_obstacles_bitmap( obstacles )
-    pf1 = PotentialField()
-    pf2 = PotentialField() 
-    pf1.mark_NF1( robots[0].robot_goal.get_abs_round_point()[0] ) 
-    pf2.mark_NF1( robots[0].robot_goal.get_abs_round_point()[1] ) 
-
-    print("NF1 PF Time Cost:", time.time() - start_time, "seconds")
+    pf1, pf2 = update_PF( method = "NF1" )
 
     xinit = robots[0].robot_init.config
     xgoal = robots[0].robot_goal.config
@@ -163,8 +154,8 @@ pygame.display.set_caption('GRA Demo')
 # init variables
 globals.robot_dat_path = "Dat/robot" + sys.argv[1] + ".dat"
 globals.obstacle_dat_path = "Dat/obstacle" + sys.argv[1] + ".dat"
-print( globals.robot_dat_path)
-print( globals.obstacle_dat_path)
+print( "load data...",globals.robot_dat_path)
+print( "load data...",globals.obstacle_dat_path)
 running = True
 dragging_obj = None
 dragging_obj_start_pos = (0, 0)
