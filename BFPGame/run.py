@@ -152,8 +152,9 @@ gameDisplay = pygame.display.set_mode(
 pygame.display.set_caption('GRA Demo')
 
 # init variables
-globals.robot_dat_path = "Dat/robot" + sys.argv[1] + ".dat"
-globals.obstacle_dat_path = "Dat/obstacle" + sys.argv[1] + ".dat"
+if len(sys.argv) > 1:
+    globals.robot_dat_path = "Dat/robot" + sys.argv[1] + ".dat"
+    globals.obstacle_dat_path = "Dat/obstacle" + sys.argv[1] + ".dat"
 print( "load data...",globals.robot_dat_path)
 print( "load data...",globals.obstacle_dat_path)
 running = True

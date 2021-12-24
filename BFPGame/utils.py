@@ -219,9 +219,11 @@ def findNeighbors(point):
 
 def findBestNeighbor( point, distance ):
     bestNeighbor = None
-    d = 0
+    d = 999
+    # print(f"{point=} {distance[point]=}")
     for n in findNeighbors(point):
-        if distance[n] > d:
+        if distance[n] < d and distance[n] < distance[point]:
+            # print(f"{n=} {distance[n]=}")
             d = distance[n]
             bestNeighbor = n
     return bestNeighbor

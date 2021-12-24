@@ -12,5 +12,5 @@ path = None
 obstacles_bitmap = np.full((128, 128), 254)
 
 
-robot_dat_path = "Dat/robot.dat"
-obstacle_dat_path = "Dat/obstacle.dat"
+robot_dat_path = "Dat/robot1.dat"
+obstacle_dat_path = "Dat/obstacle1.dat"

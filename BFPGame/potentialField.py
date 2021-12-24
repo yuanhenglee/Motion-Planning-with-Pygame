@@ -70,8 +70,6 @@ class PotentialField:
                 next_point = T_dict[next_point]
         else:
             print( "Path Not Found ...")
-        
-
 
 
     def mark_NF1(self, goal ):
@@ -110,9 +108,9 @@ class PotentialField:
         S = set()
         for i in range(128):
             for j in range(128):
-                if globals.obstacles_bitmap[i][j] == 255:
+                if globals.obstacles_bitmap[i][j] == 255 or i == 0 or i == 127 or j == 0 or j == 127:
                     for neighbor in utils.findNeighbors((i,j)):
-                        if globals.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254:
+                        if globals.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254 :
                             distance[i][j] = 0
                             origin[(i,j)] = (i,j)
                             l_configs[0].append((i,j))
@@ -142,15 +140,16 @@ class PotentialField:
         Sigma = set([goal])
         l_configs = {0:[]}
         q = goal
+
         while q not in S:
             q_prime = utils.findBestNeighbor( q, distance )
+            if q_prime == None:
+                break
             Sigma.add(q_prime)
             q = q_prime
+            # print(f"{q=} {distance[q[0]][q[1]]=}")
+            # bitmap[q] = 0
         S = S.union(Sigma)
-
-        # for p in S:
-        #     bitmap[p[0]][p[1]] = 0
-
 
         bitmap[goal[0]][goal[1]] = 0
         Q = [goal]
