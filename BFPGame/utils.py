@@ -135,7 +135,7 @@ def mouse2Rotation(v1, v2, center):
     theta = math.atan2(vector2[1], vector2[0]) - \
         math.atan2(vector1[1], vector1[0])
     rotation =  math.degrees(theta)
-    print( f"{v1=} {v2=} {center=} {rotation=}")
+    # print( f"{v1=} {v2=} {center=} {rotation=}")
     return rotation
 
 
