@@ -84,7 +84,7 @@ def set_BFS_PF():
         globals.show_path = False
         return
 
-    pf1, pf2 = update_PF( method = "NF1" )
+    pf1, pf2 = update_PF(method="NF2")
 
     xinit = robots[0].robot_init.config
     xgoal = robots[0].robot_goal.config
