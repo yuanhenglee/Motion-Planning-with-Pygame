@@ -9,7 +9,7 @@ import globals
 multiplier = 4
 
 # radius resolution
-n_angle_seg = 12 
+n_angle_seg = 20
 
 # min move step
 min_step = 1
