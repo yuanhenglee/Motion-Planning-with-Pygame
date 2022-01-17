@@ -22,7 +22,7 @@ Obstacles and robots can be set with input files (like those in `Dat`), or it ca
 
 ## Usage
 ```shell
-python3
+python3 src/run.py Dat/robot.dat Dat/obstacle.dat 
 ```
 ## Requirements
 * Python 3.9.9
