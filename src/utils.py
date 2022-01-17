@@ -3,7 +3,6 @@ import numpy as np
 from numpy.core.numeric import cross
 from polygon import *
 import copy
-import globals
 
 # scale from 128*128 to 4 times bigger
 multiplier = 4
@@ -45,7 +44,7 @@ def collision_detect( config, robot_init, obstacles ) -> bool:
 #     robot.update_abs_vertices()
 #     for c in robot.convex:
 #         for point in convex_boundaries(c):
-#             if globals.obstacles_bitmap[point[0]][point[1]] == 255:
+#             if settings.obstacles_bitmap[point[0]][point[1]] == 255:
 #                 return True
 #     return False
 

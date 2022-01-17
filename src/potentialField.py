@@ -3,7 +3,7 @@ import pygame
 import copy
 import numpy as np
 from color import *
-import globals
+import settings
 
 cost = 1
 
@@ -74,7 +74,7 @@ class PotentialField:
             print("Path Not Found ...")
 
     def mark_NF1(self, goal):
-        bitmap = copy.deepcopy(globals.obstacles_bitmap)
+        bitmap = copy.deepcopy(settings.obstacles_bitmap)
         bitmap[goal[0]][goal[1]] = 0
 
         # BFS from goal
@@ -109,9 +109,9 @@ class PotentialField:
         S = set()
         for i in range(128):
             for j in range(128):
-                if globals.obstacles_bitmap[i][j] == 255 or i == 0 or i == 127 or j == 0 or j == 127:
+                if settings.obstacles_bitmap[i][j] == 255 or i == 0 or i == 127 or j == 0 or j == 127:
                     for neighbor in utils.findNeighbors((i, j)):
-                        if globals.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254:
+                        if settings.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254:
                             distance[i][j] = 0
                             origin[(i, j)] = (i, j)
                             l_configs[0].append((i, j))
@@ -125,7 +125,7 @@ class PotentialField:
             Li = l_configs[i]
             for q in Li:
                 for neighbor in utils.findNeighbors(q):
-                    if globals.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254:
+                    if settings.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254:
                         if distance[neighbor[0]][neighbor[1]] == 254:
                             distance[neighbor[0]][neighbor[1]] = i+cost
                             origin[neighbor] = origin[q]
@@ -171,7 +171,7 @@ class PotentialField:
             Li = l_configs[i]
             for q in Li:
                 for neighbor in utils.findNeighbors(q):
-                    if globals.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254 and bitmap[neighbor[0]][neighbor[1]] == 254:
+                    if settings.obstacles_bitmap[neighbor[0]][neighbor[1]] == 254 and bitmap[neighbor[0]][neighbor[1]] == 254:
                         bitmap[neighbor[0]][neighbor[1]
                                             ] = bitmap[q[0]][q[1]] + 1
                         if i+cost in l_configs:
