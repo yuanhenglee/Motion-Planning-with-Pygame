@@ -152,11 +152,13 @@ gameDisplay = pygame.display.set_mode(
 pygame.display.set_caption('GRA Demo')
 
 # init variables
-if len(sys.argv) > 1:
-    globals.robot_dat_path = "Dat/robot" + sys.argv[1] + ".dat"
-    globals.obstacle_dat_path = "Dat/obstacle" + sys.argv[1] + ".dat"
-print( "load data...",globals.robot_dat_path)
-print( "load data...",globals.obstacle_dat_path)
+try:
+    globals.robot_dat_path = sys.argv[1]
+    print("load data...", globals.robot_dat_path)
+    globals.obstacle_dat_path = sys.argv[2]
+    print("load data...", globals.obstacle_dat_path)
+except:
+    raise Exception("Usage: python3 run.py [robot_dat] [obstacle_dat]")
 running = True
 dragging_obj = None
 dragging_obj_start_pos = (0, 0)
