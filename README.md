@@ -3,12 +3,11 @@
   <h2 align="center">GRA Final Project</h2>
 
   <p align="center">
-    motion planning demo using potential field method and BFS
+    A python visualization of motion planning using potential field method and BFS
   </p>
 </div>
+<br />
 
-
-A python visualization of motion planning. It allows you to draw obstacles and robots on a 128*128 map, and find a path between any two configurations.
 ## Features
 
 ### Calculating Potential Field
