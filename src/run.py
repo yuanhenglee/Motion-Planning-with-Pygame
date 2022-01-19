@@ -121,7 +121,10 @@ def caculate_BFS_path():
             neighbor_r = int(neighbor.rotation)
             pf_score = int(get_arbitration_potential(robot_init, neighbor, pf1, pf2))
             if pf_score < 254*2 and not visited[neighbor_x][neighbor_y][neighbor_r] and not utils.collision_detect( neighbor, robot_init , obstacles ):
-                if pf_score < 5:
+                if pf_score < 5 and abs(neighbor_r-xgoal.rotation) < 20:
+                    # print(pf_score)
+                    # print(neighbor)
+                    # print(xgoal)
                     print("Path Found")
                     success = True
                     T_dict[xgoal] = x
@@ -202,10 +205,10 @@ all_objects.add(gui.Button('Show BFS Path', 192, 36,
 all_objects.add(gui.Button('Animation', 192, 36,
                 utils.world2Canvas((129, 65)), 5, toggle_animation))
 
-
+clock = pygame.time.Clock()
 
 while running:
-
+    clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.locals.QUIT:
             running = False
