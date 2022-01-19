@@ -1,6 +1,6 @@
 <div align="center">
 
-  <h2 align="center">GRA Final Project</h2>
+  <h2 align="center">Motion Planning with Pygame</h2>
 
   <p align="center">
     A python visualization of motion planning using potential field method and BFS
@@ -11,7 +11,7 @@
 ## Features
 
 ### Calculating Potential Field
-Two different ways( NF1, NF2 ) are used to calculate the potential values.
+Two different ways( NF1, NF2 ) are used to calculate potential values.
 
 ### Pathfinding
 Pathfinding using Best First Search algorithm.
@@ -20,8 +20,9 @@ Pathfinding using Best First Search algorithm.
 Obstacles and robots can be set with input files (like those in `Dat`), or it can also be configured using GUI interface.
 
 ## Usage
-```shell
-python3 src/run.py Dat/robot.dat Dat/obstacle.dat 
+Run:
+```console
+$ python3 src/run.py Dat/robot.dat Dat/obstacle.dat 
 ```
 ## Requirements
 * Python 3.9.9
