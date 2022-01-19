@@ -10,9 +10,8 @@ import numpy as np
 from path import Path
 import time
 import sys
-
 import pygame
-from pygame.locals import QUIT
+import pygame.locals
 
 
 def update_display():
@@ -79,11 +78,16 @@ def update_PF( method = "NF1"):
     
     return pf1,pf2
 
-def set_BFS_PF():
+
+def toggle_BFS_path():
     if settings.show_path:
         settings.show_path = False
         return
+    caculate_BFS_path()
+    settings.show_path = not settings.show_path
 
+
+def caculate_BFS_path():
     pf1, pf2 = update_PF(method="NF2")
 
     xinit = robots[0].robot_init.config
@@ -143,7 +147,18 @@ def set_BFS_PF():
 
     print("BFS Time Cost:", time.time() - start_time, "seconds")
 
-    settings.show_path = not settings.show_path
+
+def toggle_animation():
+    if settings.show_path:
+        settings.show_path = False
+
+    if not settings.path:
+        caculate_BFS_path()
+
+
+
+
+
 
 # init pygame window
 pygame.init()
@@ -183,7 +198,9 @@ all_objects.add(gui.Button('Show NF1 PF', 192, 36,
 all_objects.add(gui.Button('Show NF2 PF', 192, 36,
                 utils.world2Canvas((129, 43)), 5, set_NF2_PF))
 all_objects.add(gui.Button('Show BFS Path', 192, 36,
-                utils.world2Canvas((129, 54)), 5, set_BFS_PF))
+                utils.world2Canvas((129, 54)), 5, toggle_BFS_path))
+all_objects.add(gui.Button('Animation', 192, 36,
+                utils.world2Canvas((129, 65)), 5, toggle_animation))
 
 
 
