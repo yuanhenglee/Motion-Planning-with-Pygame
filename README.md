@@ -8,16 +8,31 @@
 </div>
 <br />
 
+<p align="middle">
+  <img src="./pic/animation.gif" width="300" />
+  <img src="./pic/animation2.gif" width="300" />
+</p>
+
 ## Features
+### Custom Map
+Obstacles and robots can be set with input files (like those in `Dat`), or it can also be configured using GUI interface.
+<p align="middle">
+  <img src="./pic/dragndrop.gif" width="600" />
+</p>
 
 ### Calculating Potential Field
 Two different ways( NF1, NF2 ) are used to calculate potential values.
+<p align="middle">
+  <img src="./pic/NF1.png" width="400" />
+  <img src="./pic/NF2.png" width="400" /> 
+</p>
 
 ### Pathfinding
 Pathfinding using Best First Search algorithm.
+<p align="middle">
+  <img src="./pic/BFS.png" width="600" />
+</p>
 
-### Custom Map
-Obstacles and robots can be set with input files (like those in `Dat`), or it can also be configured using GUI interface.
 
 ## Usage
 Run:
