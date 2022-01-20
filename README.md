@@ -9,8 +9,8 @@
 <br />
 
 <p align="middle">
-  <img src="./pic/animation-loop.gif" width="300" />
-  <img src="./pic/animation2-loop.gif" width="300" />
+  <img src="./pic/animation-loop.gif" width="400" />
+  <img src="./pic/animation2-loop.gif" width="400" />
 </p>
 
 ## Features
