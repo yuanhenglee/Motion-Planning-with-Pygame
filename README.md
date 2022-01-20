@@ -9,15 +9,15 @@
 <br />
 
 <p align="middle">
-  <img src="./pic/animation.gif" width="300" />
-  <img src="./pic/animation2.gif" width="300" />
+  <img src="./pic/animation-loop.gif" width="300" />
+  <img src="./pic/animation2-loop.gif" width="300" />
 </p>
 
 ## Features
 ### Custom Map
 Obstacles and robots can be set with input files (like those in `Dat`), or it can also be configured using GUI interface.
 <p align="middle">
-  <img src="./pic/dragndrop.gif" width="600" />
+  <img src="./pic/dragndrop-loop.gif" width="600" />
 </p>
 
 ### Calculating Potential Field
