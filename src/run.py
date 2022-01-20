@@ -172,7 +172,7 @@ def toggle_animation():
 pygame.init()
 gameDisplay = pygame.display.set_mode(
     (178*utils.multiplier, 128*utils.multiplier))
-pygame.display.set_caption('GRA Demo')
+pygame.display.set_caption('Motion Planning Visualization')
 
 # init variables
 try:
