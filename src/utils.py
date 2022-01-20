@@ -44,7 +44,7 @@ def collision_detect( config, robot_init, obstacles ) -> bool:
 #     robot.update_abs_vertices()
 #     for c in robot.convex:
 #         for point in convex_boundaries(c):
-#             if settings.obstacles_bitmap[point[0]][point[1]] == 255:
+#             if globVar.obstacles_bitmap[point[0]][point[1]] == 255:
 #                 return True
 #     return False
 

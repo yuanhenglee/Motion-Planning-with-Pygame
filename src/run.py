@@ -4,7 +4,7 @@ import utils
 from color import *
 from polygon import * 
 import gui
-import settings
+import globVar
 from potentialField import PotentialField
 import numpy as np
 from path import Path
@@ -20,51 +20,53 @@ def update_display():
     for obj in all_objects:
         obj.draw(gameDisplay)
 
-    if settings.show_bitmap and settings.pf != None:
-        settings.pf.show_bitmap(gameDisplay)
+    if globVar.show_bitmap and globVar.pf != None:
+        globVar.pf.show_bitmap(gameDisplay)
 
-    if settings.show_path and settings.path != None:
-        settings.path.show_path(gameDisplay, robots[0].robot_init)
+    if globVar.show_path and globVar.path != None:
+        globVar.path.show_path(gameDisplay)
 
+    if globVar.show_animation and globVar.path != None:
+        globVar.path.show_animation(gameDisplay)
 
     pygame.display.update()
 
 
 def set_mode_drag():
-    settings.mode = 'drag'
+    globVar.mode = 'drag'
     print("SET DRAG")
 
 
 def set_mode_rotate():
-    settings.mode = 'rotate'
+    globVar.mode = 'rotate'
     print("SET ROTATION")
 
 def toggle_drag_rotate():
-    if settings.mode == 'drag':
+    if globVar.mode == 'drag':
         set_mode_rotate()
     else:
         set_mode_drag()
 
 def set_NF1_PF():
-    if settings.show_bitmap:
-        settings.show_bitmap = False
+    if globVar.show_bitmap:
+        globVar.show_bitmap = False
         return
     update_PF( "NF1" )
-    settings.show_bitmap = not settings.show_bitmap
+    globVar.show_bitmap = not globVar.show_bitmap
 
 
 def set_NF2_PF():
-    if settings.show_bitmap:
-        settings.show_bitmap = False
+    if globVar.show_bitmap:
+        globVar.show_bitmap = False
         return
     update_PF( "NF2" )
-    settings.show_bitmap = not settings.show_bitmap
+    globVar.show_bitmap = not globVar.show_bitmap
 
 def update_PF( method = "NF1"):
     # PF timer
     start_time = time.time()
 
-    settings.obstacles_bitmap = utils.new_obstacles_bitmap(obstacles)
+    globVar.obstacles_bitmap = utils.new_obstacles_bitmap(obstacles)
     pf1 = PotentialField()
     pf2 = PotentialField()
     if method == "NF1":
@@ -73,18 +75,18 @@ def update_PF( method = "NF1"):
     elif method == "NF2":
         pf1.mark_NF2( robots[0].robot_goal.get_abs_round_point()[0] ) 
         pf2.mark_NF2( robots[0].robot_goal.get_abs_round_point()[1] ) 
-    settings.pf = pf1 + pf2
+    globVar.pf = pf1 + pf2
     print( method,"PF Time Cost:", time.time() - start_time, "seconds")
     
     return pf1,pf2
 
 
 def toggle_BFS_path():
-    if settings.show_path:
-        settings.show_path = False
+    if globVar.show_path:
+        globVar.show_path = False
         return
     caculate_BFS_path()
-    settings.show_path = not settings.show_path
+    globVar.show_path = not globVar.show_path
 
 
 def caculate_BFS_path():
@@ -136,14 +138,14 @@ def caculate_BFS_path():
                     # n_openQ += 1
                     visited[neighbor_x][neighbor_y][neighbor_r] = True
                 # if neighbor == xgoal :
-    settings.path = Path()
-    settings.path.append(xgoal)
+    globVar.path = Path()
+    globVar.path.append(xgoal)
     if success:
         next_point = T_dict[xgoal]
         while next_point!=xinit:
             x = int(next_point.position[0])
             y = int(next_point.position[1])
-            settings.path.append(next_point)
+            globVar.path.append(next_point)
             next_point = T_dict[next_point]
     else:
         print( "Path Not Found ...")
@@ -152,11 +154,14 @@ def caculate_BFS_path():
 
 
 def toggle_animation():
-    if settings.show_path:
-        settings.show_path = False
+    if globVar.show_animation:
+        globVar.show_animation = False
+        globVar.animation_count = 0
+        return
 
-    if not settings.path:
-        caculate_BFS_path()
+    caculate_BFS_path()
+
+    globVar.show_animation = True
 
 
 
@@ -171,10 +176,10 @@ pygame.display.set_caption('GRA Demo')
 
 # init variables
 try:
-    settings.robot_dat_path = sys.argv[1]
-    print("load data...", settings.robot_dat_path)
-    settings.obstacle_dat_path = sys.argv[2]
-    print("load data...", settings.obstacle_dat_path)
+    globVar.robot_dat_path = sys.argv[1]
+    print("load data...", globVar.robot_dat_path)
+    globVar.obstacle_dat_path = sys.argv[2]
+    print("load data...", globVar.obstacle_dat_path)
 except:
     raise Exception("Usage: python3 run.py [robot_dat] [obstacle_dat]")
 running = True
@@ -183,6 +188,7 @@ dragging_obj_start_pos = (0, 0)
 dragging_obj_start_rotation = 0
 dragging_mouse_start_pos = (0, 0)
 robots, obstacles = initialize()
+globVar.movable_robot = copy.deepcopy(robots[0].robot_init)
 all_objects = set(obstacles)
 for r in robots:
     all_objects.add(r.robot_init)
@@ -233,13 +239,13 @@ while running:
             elif event.type == pygame.MOUSEMOTION:
                 mousePosition = pygame.mouse.get_pos()
 
-                if settings.mode == 'drag':
+                if globVar.mode == 'drag':
                     movement = utils.formVector(utils.canvas2World(
                         dragging_mouse_start_pos), utils.canvas2World(mousePosition))
                     new_pos = dragging_obj_start_pos[0] + \
                         movement[0], dragging_obj_start_pos[1] + movement[1]
                     dragging_obj.config.set_config(position=new_pos)
-                elif settings.mode == 'rotate':
+                elif globVar.mode == 'rotate':
                     new_rotation = utils.mouse2Rotation(
                         utils.canvas2World(dragging_mouse_start_pos), utils.canvas2World(mousePosition), dragging_obj.center) + dragging_obj_start_rotation
                     center_before_rotate = dragging_obj.center
@@ -249,5 +255,4 @@ while running:
 
                 dragging_obj.update_abs_vertices()
                 lastMousePosition = mousePosition
-
-        update_display()
+    update_display()

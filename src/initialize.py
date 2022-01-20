@@ -3,12 +3,12 @@ import sys
 import pygame
 from polygon import *
 import utils
-import settings
+import globVar
 
 
 def loadRobots():
     file_lines_cleaned = []
-    with open(settings.robot_dat_path) as f:
+    with open(globVar.robot_dat_path) as f:
         file_lines = f.readlines()
         for l in file_lines:
             if l != '\n' and l[0] != '#':
@@ -53,7 +53,7 @@ def loadRobots():
 
 def loadObstacle():
     file_lines_cleaned = []
-    with open(settings.obstacle_dat_path) as f:
+    with open(globVar.obstacle_dat_path) as f:
         file_lines = f.readlines()
         for l in file_lines:
             if l != '\n' and l[0] != '#':
